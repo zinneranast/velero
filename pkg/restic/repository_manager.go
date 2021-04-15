@@ -246,6 +246,12 @@ func (rm *repositoryManager) exec(cmd *Command, backupLocation string) error {
 
 	// if there's a caCert on the ObjectStorage, write it to disk so that it can be passed to restic
 	caCert, err := GetCACert(rm.kbClient, rm.namespace, backupLocation)
+	rm.log.WithFields(logrus.Fields{
+		"repository": cmd.RepoName(),
+		"command":    cmd.String(),
+		"caCert":     caCert,
+		"err":     err,
+	}).Infof("CHECK CRT")
 	if err != nil {
 		return err
 	}
